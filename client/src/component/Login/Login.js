@@ -7,7 +7,7 @@ class Login extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: '',
+            email: '',
             password: ' '
 
         }
@@ -22,7 +22,7 @@ class Login extends React.Component {
     }
 
     handleLogin = () => {
-        console.log(this.state.username, this.state.password)
+        console.log(this.state.email, this.state.password)
     }
 
 
@@ -34,8 +34,8 @@ class Login extends React.Component {
                     <h2 className="m-5 d-flex justify-content-center ">Login</h2>
                     <Form className="">
                         <Form.Group controlId="formGroupEmail" className="d-flex">
-                            <Form.Label className="mr-5">Username </Form.Label>
-                            <Form.Control name="username" type="text" onChange={this.onChange} placeholder="Enter username" />
+                            <Form.Label className="mr-5">Email </Form.Label>
+                            <Form.Control name="email" type="email" className="ml-4" onChange={this.onChange} placeholder="Enter email" />
                         </Form.Group>
                         <Form.Group controlId="formGroupPassword" className="d-flex">
                             <Form.Label className="mr-5">Password</Form.Label>

@@ -7,12 +7,10 @@ class Register extends React.Component {
         super(props);
         this.state = {
             username: '',
+            email: '',
             password: ' '
-
         }
     }
-
-
 
     onChange = e => {
         this.setState({
@@ -34,6 +32,10 @@ class Register extends React.Component {
                         <Form.Group controlId="formGroupEmail" className="d-flex">
                             <Form.Label className="mr-5">Username </Form.Label>
                             <Form.Control name="username" type="text" placeholder="Enter username" onChange={this.onChange} />
+                        </Form.Group>
+                        <Form.Group controlId="formGroupEmail" className="d-flex">
+                            <Form.Label className="mr-5">Email </Form.Label>
+                            <Form.Control name="email" type="email" className="ml-4" placeholder="Enter email" onChange={this.onChange} />
                         </Form.Group>
                         <Form.Group controlId="formGroupPassword" className="d-flex">
                             <Form.Label className="mr-5">Password</Form.Label>
