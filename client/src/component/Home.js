@@ -14,7 +14,6 @@ class Home extends React.Component {
     }
 
     render() {
-        console.log(this.props.store)
         const username = this.props.store.username;
         return (
             <div className="mr-5 mt-5">

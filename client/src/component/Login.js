@@ -29,25 +29,8 @@ class Login extends React.Component {
     handleLogin = (e) => {
         e.preventDefault()
         const { email, password } = this.state;
-        if (login(email, password) === false) {
-            this.setState({
-                error: true
-            })
-        } else {
-            login(email, password).then(res => {
-                const data = res;
-                if (data) {
-                    if (data.type === 1) {
-                        this.props.handleLogin(data.data.username)
-                    } else {
-                        this.setState({
-                            error: true
-                        })
-                    }
-                }
+        this.props.handleLogin(email, password)
 
-            })
-        }
     }
 
     render() {

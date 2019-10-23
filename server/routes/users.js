@@ -91,7 +91,6 @@ router.post('/login', function (req, res, next) {
     { session: false },
     (err, user, info) => {
       if (err || !user) {
-        console.log("error from passport return   ")
         return res.json({
           type: 0,
           message: info ? info.message : 'Login failed',

@@ -11,11 +11,11 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        handleLogin: (username) => {
-            dispatch(actions.handleLogin(token, username))
+        handleLogin: (username, email, password) => {
+            dispatch(actions.handleRegisterRequest(username, email, password))
         },
         logOut: () => {
-            dispatch(actions.logOut())
+            dispatch(actions.logOutRequest())
         }
     }
 }

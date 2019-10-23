@@ -16,7 +16,7 @@ export const register = (username, email, password) => {
             password,
         })
         .then(res => {
-            console.log(res);
+
             localStorage.setItem('usertoken', res.data.token)
             return res.data
         }).catch(res => {
@@ -41,6 +41,7 @@ export const login = (email, password) => {
             password
         })
         .then(res => {
+
             localStorage.setItem('usertoken', res.data.token)
             return res.data
         }).catch(res => {

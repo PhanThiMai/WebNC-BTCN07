@@ -29,23 +29,8 @@ class Register extends React.Component {
     handleRegister = (e) => {
         e.preventDefault()
         const { username, email, password } = this.state;
-        if (register(username, email, password) === false) {
-            console.log("error")
-        } else {
-            register(username, email, password).then(res => {
-                const data = res;
-                if (data) {
-                    if (data.type === 1) {
-                        this.props.handleLogin(data.data.username)
-                    } else {
-                        this.setState({
-                            error: true
-                        })
-                    }
-                }
+        this.props.handleLogin(username, email, password)
 
-            })
-        }
     }
 
 
