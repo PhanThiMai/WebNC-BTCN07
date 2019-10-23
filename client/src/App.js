@@ -1,24 +1,32 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import Login from './component/Login/Login'
-import Register from './component/Register/Register'
+import Login from './Container/Login'
+import Register from './Container/Register'
+import Home from './component/Home'
+
 import {
   BrowserRouter as Router,
-  Route, Switch
+  Route, Switch, Redirect
 } from "react-router-dom";
 
-function App() {
+function App(props) {
+
+  const { store } = props;
   return (
     <Router>
-
-
       <Switch>
-        <Route exact path="/" component={Login} />
-        <Route path="/register" component={Register} />
+        <Route exact path="/"  >
+          {store.isLogin ? <Redirect to="/home" component={Home} /> : <Login />}
+        </Route>
 
+        <Route path="/register"  >
+          {store.isLogin ? <Redirect to="/home" component={Home} /> : <Register />}
+        </Route>
+
+        <Route path="/home"  >
+          {store.isLogin ? <Redirect to="/" /> : <Home />}
+        </Route>
       </Switch >
-
     </Router >
 
 

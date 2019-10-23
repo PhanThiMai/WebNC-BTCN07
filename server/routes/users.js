@@ -1,4 +1,3 @@
-
 var express = require('express');
 var router = express.Router();
 const users = require('../models/user.model')
@@ -31,12 +30,12 @@ router.get('/', function (req, res, next) {
 router.post('/register', (req, res, next) => {
   const { body } = req;
   if (!body.email || body.email.length < 5) {
-    return res.status(422).json({
+    return res.json({
       type: 0
     });
   }
   if (!body.password || body.password.length < 5) {
-    return res.status(422).json({
+    return res.json({
       type: 0
     });
   }
@@ -52,15 +51,25 @@ router.post('/register', (req, res, next) => {
           password: hashPassword(body.password)
         });
 
+        let token = jwt.sign({
+          ...finalUser
+        }, process.env.SECRET_KEY, {
+          expiresIn: 1440
+        })
+
         return finalUser.save()
           .then(() => res.json({
-            data: finalUser,
+            token: token,
+            data: {
+              username: finalUser.username,
+              email: finalUser.email
+            },
             type: 1
           }))
           .catch(err => {
             res.json({
               type: 0,
-              err: "can not save user"
+              err
             })
           });
       } else {
@@ -78,26 +87,39 @@ router.post('/register', (req, res, next) => {
 
 
 router.post('/login', function (req, res, next) {
-  passport.authenticate('local', { session: false }, (err, user, info) => {
-    if (err || !user) {
-      return res.status(400).json({
-        type: 0,
-        message: info ? info.message : 'Login failed',
-        user: user
-      });
-    }
-
-    req.login(user, { session: false }, (err) => {
-      if (err) {
-        res.send(err);
+  passport.authenticate('local',
+    { session: false },
+    (err, user, info) => {
+      if (err || !user) {
+        console.log("error from passport return   ")
+        return res.json({
+          type: 0,
+          message: info ? info.message : 'Login failed',
+          user: user
+        });
       }
-      const token = jwt.sign(user, 'WebNC');
-      return res.json({
-        user, token,
-        type: 1
+
+      req.login(user, { session: false }, (err) => {
+
+        if (err) {
+          res.json({
+            err,
+            type: 0
+          })
+        }
+        const token = jwt.sign({
+          ...user
+        }, process.env.SECRET_KEY, {
+          expiresIn: 1440
+        })
+
+        return res.json({
+          data: { email: user.email, username: user.username },
+          token,
+          type: 1
+        });
       });
-    });
-  })
+    })
     (req, res);
 
 });

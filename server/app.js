@@ -1,18 +1,32 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-const mongoose = require('mongoose');
+
+const bodyParser = require('body-parser');
+const session = require('express-session');
+const cors = require('cors');
+const errorHandler = require('errorhandler');
+const express = require("express");
+const path = require("path");
+var mongoose = require("mongoose");
 require("dotenv").config();
 const passport = require('passport');
 require('./passport');
 
 
+var app = express();
+mongoose.Promise = global.Promise;
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+const isProduction = process.env.NODE_ENV === 'production';
 
-var app = express();
+app.use(cors());
+app.use(require('morgan')('dev'));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(session({ secret: 'LightBlog', cookie: { maxAge: 60000 }, resave: false, saveUninitialized: false }));
+
+if (!isProduction) {
+  app.use(errorHandler());
+}
 
 
 const connStr = `mongodb+srv://${process.env.DB_USER}:${
@@ -27,33 +41,25 @@ mongoose.connect(connStr, err => {
 });
 
 
-
-
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 
-
-// catch 404 and forward to error handler
-app.use(function (req, res, next) {
-  next(createError(404));
+app.use((req, res, next) => {
+  const err = new Error('Not Found');
+  err.status = 404;
+  next(err);
 });
 
-// error handler
-app.use(function (err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
+app.use((err, req, res) => {
   res.status(err.status || 500);
-  res.render('error');
+  res.json({
+    errors: {
+      message: err.message,
+      error: {},
+    },
+  });
 });
 
-module.exports = app;
+const server = app.listen(4000, () => console.log('Server started on http://localhost:4000'));
