@@ -1,6 +1,6 @@
 import React from 'react'
 import { Form, Button } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import { register } from '../api/user'
 
 class Register extends React.Component {
@@ -40,7 +40,9 @@ class Register extends React.Component {
                             username: '',
                             email: '',
                             password: ''
-                        })
+                        });
+                        this.props.handleLogin(data.data.username)
+
                     } else {
                         this.setState({
                             error: true

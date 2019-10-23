@@ -39,10 +39,6 @@ class Login extends React.Component {
                 if (data) {
                     if (data.type === 1) {
                         this.props.handleLogin(data.data.username)
-                        this.setState({
-                            email: '',
-                            password: ''
-                        })
                     } else {
                         this.setState({
                             error: true
@@ -53,8 +49,6 @@ class Login extends React.Component {
             })
         }
     }
-
-
 
     render() {
         const { error, email, password } = this.state;

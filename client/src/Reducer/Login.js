@@ -17,6 +17,7 @@ let login = (state = initialState, action) => {
 
         case types.LOG_OUT:
             localStorage.removeItem("usertoken")
+
             return {
                 isLogin: false
             }

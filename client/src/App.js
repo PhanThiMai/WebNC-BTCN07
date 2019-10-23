@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import Login from './Container/Login'
 import Register from './Container/Register'
-import Home from './component/Home'
+import Home from './Container/Home'
 
 import {
   BrowserRouter as Router,
@@ -15,17 +15,23 @@ function App(props) {
   return (
     <Router>
       <Switch>
-        <Route exact path="/"  >
-          {store.isLogin ? <Redirect to="/home" component={Home} /> : <Login />}
+        <Route exact path="/" >
+          {store.isLogin ? <Redirect to="/Home" /> : <Login />}
+
         </Route>
 
-        <Route path="/register"  >
-          {store.isLogin ? <Redirect to="/home" component={Home} /> : <Register />}
+        <Route path="/register" >
+          {store.isLogin ? <Redirect to="/Home" /> : <Register />}
         </Route>
 
-        <Route path="/home"  >
+        <Route path="/home" >
+          {!store.isLogin ? <Redirect to="/" /> : <Home />}
+
+        </Route>
+
+        {/* <Route path="/home"  >
           {store.isLogin ? <Redirect to="/" /> : <Home />}
-        </Route>
+        </Route> */}
       </Switch >
     </Router >
 
