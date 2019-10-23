@@ -12,12 +12,11 @@ let login = (state = initialState, action) => {
         case types.HANDLE_LOGIN:
             return {
                 username: action.username,
-                isLogin: true
+                isLogin: !state.isLogin
             }
 
         case types.LOG_OUT:
             localStorage.removeItem("usertoken")
-
             return {
                 isLogin: false
             }

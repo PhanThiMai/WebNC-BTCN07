@@ -36,13 +36,7 @@ class Register extends React.Component {
                 const data = res;
                 if (data) {
                     if (data.type === 1) {
-                        this.setState({
-                            username: '',
-                            email: '',
-                            password: ''
-                        });
                         this.props.handleLogin(data.data.username)
-
                     } else {
                         this.setState({
                             error: true
